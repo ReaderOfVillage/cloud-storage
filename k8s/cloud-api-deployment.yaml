@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloud-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloud-api
+  template:
+    metadata:
+      labels:
+        app: cloud-api
+    spec:
+      containers:
+      - name: cloud-api
+        image: croomie/cloud-api:4.0
+
+        envFrom:
+        - secretRef:
+            name: cloud-api-secret
+
+        ports:
+        - containerPort: 8000

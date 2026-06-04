@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: cloud-api
-        image: ghcr.io/ReaderOfVillage/cloud-api:latest
+        image: ghcr.io/readerofvillage/cloud-api:07b569f07e65c5722d49e8cdde9487e60fe3a7d7
 
         envFrom:
         - secretRef:

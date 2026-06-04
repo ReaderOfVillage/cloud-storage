@@ -19,4 +19,11 @@ spec:
                 name: minio
                 port:
                   number: 9001
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: minio
+                port:
+                  number: 9000   # S3 API
 {{- end }}

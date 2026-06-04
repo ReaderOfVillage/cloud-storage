@@ -1,0 +1,52 @@
+name: CI/CD Deploy to Kubernetes
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Забираем код
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Логин в GHCR (GitHub Container Registry)
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # 3. Сборка Docker image
+      - name: Build Docker image
+        run: |
+          IMAGE=ghcr.io/${{ github.repository_owner }}/cloud-api:${{ github.sha }}
+          docker build -t $IMAGE .
+          echo "IMAGE=$IMAGE" >> $GITHUB_ENV
+
+      # 4. Push image в GHCR
+      - name: Push Docker image
+        run: |
+          docker push $IMAGE
+
+      # 5. Подключение к Kubernetes
+      - name: Setup kubeconfig
+        run: |
+          echo "${{ secrets.KUBECONFIG }}" > kubeconfig
+          export KUBECONFIG=./kubeconfig
+
+          kubectl version --client
+
+      # 6. Деплой (обновление image в Deployment)
+      - name: Deploy to Kubernetes
+        run: |
+          export KUBECONFIG=./kubeconfig
+
+          kubectl set image deployment/cloud-api \
+            cloud-api=$IMAGE
+
+          kubectl rollout status deployment/cloud-api

@@ -36,21 +36,3 @@ jobs:
       - name: Push Docker image
         run: |
           docker push $IMAGE
-
-      # 5. Подключение к Kubernetes
-      - name: Setup kubeconfig
-        run: |
-          echo "${{ secrets.KUBECONFIG }}" > kubeconfig
-          export KUBECONFIG=./kubeconfig
-
-          kubectl version --client
-
-      # 6. Деплой (обновление image в Deployment)
-      - name: Deploy to Kubernetes
-        run: |
-          export KUBECONFIG=./kubeconfig
-
-          kubectl set image deployment/cloud-api \
-            cloud-api=$IMAGE
-
-          kubectl rollout status deployment/cloud-api

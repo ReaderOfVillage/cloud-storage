@@ -48,3 +48,6 @@ ingress:
     secretName: cloud-tls
 
   path: /
+
+database:
+  url: postgresql://app:app@postgres:5432/storage

@@ -12,7 +12,10 @@ spec:
     - host: {{ .Values.ingress.host }}
       http:
         paths:
-          - path: {{ .Values.ingress.path }}
+          # ======================
+          # MinIO Console
+          # ======================
+          - path: /
             pathType: Prefix
             backend:
               service:
@@ -20,14 +23,14 @@ spec:
                 port:
                   number: 9001
 
-    - host: s3.minio.local
-      http:       
-        paths:       
-          - path: /
+          # ======================
+          # S3 API
+          # ======================
+          - path: /api
             pathType: Prefix
             backend:
               service:
                 name: minio
                 port:
-                  number: 9000   # S3 API   
+                  number: 9000   
 {{- end }}

@@ -36,7 +36,7 @@ spec:
               value: https://{{ .Values.ingress.host }}
 
             - name: MINIO_SERVER_URL
-              value: https://s3.minio.local
+              value: https://{{ .Values.ingress.host }}
 
           ports:
             - containerPort: 9000

@@ -33,10 +33,10 @@ spec:
               value: password123
 
             - name: MINIO_BROWSER_REDIRECT_URL
-              value: http://{{ .Values.ingress.host }}
+              value: https://{{ .Values.ingress.host }}
 
             - name: MINIO_SERVER_URL
-              value: http://s3.minio.local
+              value: https://s3.minio.local
 
           ports:
             - containerPort: 9000

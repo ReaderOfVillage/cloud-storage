@@ -18,5 +18,5 @@ spec:
               service:
                 name: minio
                 port:
-                  number: {{ .Values.service.port }}
+                  number: 9001
 {{- end }}

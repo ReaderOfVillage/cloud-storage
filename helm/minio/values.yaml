@@ -1,0 +1,9 @@
+image:
+  repository: minio/minio
+  tag: latest
+
+rootUser: admin
+rootPassword: password123
+
+storage:
+  size: 5Gi

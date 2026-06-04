@@ -17,11 +17,9 @@ service:
 ingress:
   enabled: true
   ingressClassName: nginx
-  
-  hosts:
-    - name: minio.local
-      path: /
-      pathType: Prefix
+
+  host: minio.local
+  path: /
 
   tls: []
 

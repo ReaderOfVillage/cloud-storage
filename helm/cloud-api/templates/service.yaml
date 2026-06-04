@@ -5,9 +5,9 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
 
-selector:
-  app: cloud-api
+  selector:
+    app: cloud-api
 
-ports:
-- port: {{ .Values.service.port }}
-targetPort: {{ .Values.service.targetPort }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}

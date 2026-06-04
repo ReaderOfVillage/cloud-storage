@@ -1,3 +1,5 @@
+replicaCount: 1
+
 image:
   repository: minio/minio
   tag: latest
@@ -7,3 +9,22 @@ rootPassword: password123
 
 storage:
   size: 5Gi
+
+service:
+  type: ClusterIP
+  port: 9000
+
+ingress:
+  enabled: true
+  ingressClassName: nginx
+  
+  hosts:
+    - name: minio.local
+      path: /
+      pathType: Prefix
+
+  tls: []
+
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"

@@ -1,0 +1,50 @@
+replicaCount: 2
+
+image:
+  repository: ghcr.io/readerofvillage/cloud-api
+  tag: 07b569f07e65c5722d49e8cdde9487e60fe3a7d7
+
+secretName: cloud-api-secret
+
+containerPort: 8000
+
+service:
+  port: 8000
+  targetPort: 8000
+  type: ClusterIP
+
+envFrom:
+  - secretRef:
+      name: cloud-api-secret
+
+volumes:
+  - name: tls
+    secret:
+      secretName: cloud-tls
+
+
+volumes:
+  - name: config
+    configMap:
+      name: app-config
+
+volumes:
+  - name: postgres-data
+    persistentVolumeClaim:
+      claimName: postgres-pvc
+
+volumes:
+  - name: minio-data
+    persistentVolumeClaim:
+      claimName: minio-pvc
+
+ingress:
+  enabled: true
+  className: nginx
+  host: cloud.local
+
+  tls:
+    enabled: true
+    secretName: cloud-tls
+
+  path: /

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: cloud-api
-        image: croomie/cloud-api:4.0
+        image: ghcr.io/ReaderOfVillage/cloud-api:latest
 
         envFrom:
         - secretRef:

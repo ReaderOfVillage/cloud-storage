@@ -4,6 +4,15 @@ from fastapi import Depends
 from fastapi.responses import StreamingResponse
 from io import BytesIO
 
+import time
+from metrics import HTTP_REQUESTS, HTTP_DURATION
+from metrics import UPLOADS, UPLOAD_SIZE
+from metrics import DOWNLOADS
+from metrics import DELETES
+from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
+from fastapi import Response
+from metrics import UPLOADS, UPLOAD_SIZE, UPLOAD_FAILURES, MINIO_ERRORS
+
 from sqlalchemy.orm import Session
 
 import uuid
@@ -34,36 +43,42 @@ async def upload_file(
     file: UploadFile,
     db: Session = Depends(get_db)
 ):
+    try:
+        file_id = str(uuid.uuid4())
+        object_name = f"{file_id}-{file.filename}"
 
-    file_id = str(uuid.uuid4())
+        data = await file.read()
 
-    object_name = (
-        f"{file_id}-{file.filename}"
-    )
+        try:
+            client.put_object(
+                "uploads",
+                object_name,
+                data=BytesIO(data),
+                length=len(data)
+            )
+        except Exception:
+            MINIO_ERRORS.inc()
+            raise
 
-    data = await file.read()
+        new_file = File(
+            id=file_id,
+            filename=file.filename,
+            storage_key=object_name,
+            size=len(data)
+        )
 
-    client.put_object(
-        "uploads",
-        object_name,
-        data=BytesIO(data),
-        length=len(data)
-    )
+        db.add(new_file)
+        db.commit()
 
-    new_file = File(
-        id=file_id,
-        filename=file.filename,
-        storage_key=object_name,
-        size=len(data)
-    )
+        # success metrics
+        UPLOADS.inc()
+        UPLOAD_SIZE.observe(len(data))
 
-    db.add(new_file)
+        return {"id": file_id}
 
-    db.commit()
-
-    return {
-        "id": file_id
-    }
+    except Exception:
+        UPLOAD_FAILURES.inc()
+        raise
 
 
 @app.get("/files")
@@ -88,10 +103,17 @@ def download_file(
         .first()
     )
 
-    obj = client.get_object(
-        "uploads",
-        file.storage_key
-    )
+    #metrics
+    DOWNLOADS.inc()
+
+    try:
+        obj = client.get_object(
+            "uploads",
+            file.storage_key
+        )
+    except Exception:
+        MINIO_ERRORS.inc()
+        raise
 
     return StreamingResponse(
         obj,
@@ -112,10 +134,21 @@ def delete_file(
         .first()
     )
 
-    client.remove_object(
-        "uploads",
-        file.storage_key
-    )
+    if not file:
+        return {"error": "file not found"}
+
+    #metrics
+    DELETES.inc()
+
+    try:
+        client.remove_object(
+            "uploads",
+            file.storage_key
+        )
+    except Exception:
+        MINIO_ERRORS.inc()
+        raise
+
 
     db.delete(file)
 
@@ -124,3 +157,34 @@ def delete_file(
     return {
         "status": "deleted"
     }
+
+
+@app.middleware("http")
+async def metrics_middleware(request, call_next):
+    start = time.time()
+
+    response = await call_next(request)
+
+    duration = time.time() - start
+
+    endpoint = request.url.path
+
+    HTTP_REQUESTS.labels(
+        method=request.method,
+        endpoint=endpoint,
+        status=response.status_code
+    ).inc()
+
+    HTTP_DURATION.labels(
+        method=request.method,
+        endpoint=endpoint
+    ).observe(duration)
+
+    return response
+
+@app.get("/metrics")
+def metrics():
+    return Response(
+        generate_latest(),
+        media_type=CONTENT_TYPE_LATEST
+    )

@@ -24,10 +24,10 @@ spec:
       http:       
         paths:       
           - path: /
-              pathType: Prefix
-              backend:
-                service:
-                  name: minio
-                  port:
-                    number: 9000   # S3 API   
+            pathType: Prefix
+            backend:
+              service:
+                name: minio
+                port:
+                  number: 9000   # S3 API   
 {{- end }}

@@ -41,7 +41,7 @@ volumes:
 ingress:
   enabled: true
   className: nginx
-  host: cloud.local
+  host: storageproject.duckdns.org
 
   tls:
     enabled: true

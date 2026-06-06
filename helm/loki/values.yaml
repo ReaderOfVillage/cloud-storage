@@ -1,3 +1,4 @@
+# Loki configuration
 loki:
   enabled: true
   replicas: 1
@@ -37,6 +38,7 @@ loki:
 # Promtail (log shipper) configuration
 promtail:
   enabled: true
+  replicas: 1
   config:
     clients:
     - url: http://loki:3100/loki/api/v1/push

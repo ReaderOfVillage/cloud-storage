@@ -3,6 +3,7 @@ from fastapi import UploadFile
 from fastapi import Depends
 from fastapi.responses import StreamingResponse
 from io import BytesIO
+import mimetypes
 
 import time
 from metrics import HTTP_REQUESTS, HTTP_DURATION

@@ -24,6 +24,8 @@ spec:
           envFrom:
             - secretRef:
                 name: {{ .Values.secretName }}
+            - secretRef:
+                name: {{ .Values.secretNameMinio }}
 
           ports:
             - containerPort: {{ .Values.containerPort }}

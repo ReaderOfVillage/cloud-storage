@@ -5,6 +5,7 @@ image:
   tag: 0bbf3a064957b40e7c413185130ba408bd045a3c
 
 secretName: cloud-api-secret
+secretNameMinio: minio-app-credentials
 
 containerPort: 8000
 

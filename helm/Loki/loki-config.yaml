@@ -1,0 +1,10 @@
+{{- if .Values.loki.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: loki-config
+  namespace: {{ .Release.Namespace }}
+data:
+  loki-config.yaml: |
+{{ toYaml .Values.loki.config | indent 4 }}
+{{- end }}

@@ -49,12 +49,16 @@ async def upload_file(
 
         data = await file.read()
 
+        media_type, _ = mimetypes.guess_type(file.filename)
+        media_type = media_type or "application/octet-stream"
+
         try:
             client.put_object(
                 "uploads",
                 object_name,
                 data=BytesIO(data),
-                length=len(data)
+                length=len(data),
+                content_type=media_type
             )
         except Exception:
             MINIO_ERRORS.inc()
@@ -114,6 +118,9 @@ def download_file(
     except Exception:
         MINIO_ERRORS.inc()
         raise
+
+    media_type, _ = mimetypes.guess_type(file.filename)
+    media_type = media_type or "application/octet-stream"
 
     return StreamingResponse(
         obj,

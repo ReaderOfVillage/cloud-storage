@@ -21,19 +21,12 @@ volumes:
   - name: tls
     secret:
       secretName: cloud-tls
-
-
-volumes:
   - name: config
     configMap:
       name: app-config
-
-volumes:
   - name: postgres-data
     persistentVolumeClaim:
       claimName: postgres-pvc
-
-volumes:
   - name: minio-data
     persistentVolumeClaim:
       claimName: minio-pvc

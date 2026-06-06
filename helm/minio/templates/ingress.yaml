@@ -5,8 +5,14 @@ metadata:
   name: minio
   annotations:
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/use-forwarded-headers: "true"
 spec:
   ingressClassName: {{ .Values.ingress.ingressClassName }}
+  tls:
+  - hosts:
+    - minio.local
+    secretName: minio-tls
   rules:   
     - host: minio.local
       http:

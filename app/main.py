@@ -50,8 +50,7 @@ async def upload_file(
 
         data = await file.read()
 
-        media_type, _ = mimetypes.guess_type(file.filename)
-        media_type = media_type or "application/octet-stream"
+        media_type = magic.from_buffer(data, mime=True)
 
         try:
             client.put_object(
@@ -120,12 +119,13 @@ def download_file(
         MINIO_ERRORS.inc()
         raise
 
-    media_type, _ = mimetypes.guess_type(file.filename)
-    media_type = media_type or "application/octet-stream"
+    stat = client.stat_object("uploads", file.storage_key)
+    media_type = stat.content_type or "application/octet-stream"
 
     return StreamingResponse(
         obj,
-        media_type="application/octet-stream"
+        media_type=media_type,
+        headers={"Content-Disposition": f"attachment; filename={file.filename}"}
     )
 
 

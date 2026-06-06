@@ -6,3 +6,4 @@ python-multipart
 minio
 prometheus-client
 python-dotenv
+python-magic

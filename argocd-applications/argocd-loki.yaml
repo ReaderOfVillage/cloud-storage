@@ -9,6 +9,12 @@ spec:
     repoURL: https://github.com/ReaderOfVillage/cloud-storage.git
     targetRevision: main
     path: helm/loki
+    helm:
+      releaseName: loki
+      values: |
+        loki:
+          enabled: true
+          
   destination:
     server: https://kubernetes.default.svc
     namespace: default
@@ -16,5 +22,3 @@ spec:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-    - CreateNamespace=true

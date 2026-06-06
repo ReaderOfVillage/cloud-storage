@@ -7,7 +7,6 @@ metadata:
 spec:
   accessModes:
   - ReadWriteOnce
-  storageClassName: {{ .Values.loki.persistence.storageClassName }}
   resources:
     requests:
       storage: {{ .Values.loki.persistence.size }}

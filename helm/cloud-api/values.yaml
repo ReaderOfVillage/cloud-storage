@@ -2,7 +2,7 @@ replicaCount: 2
 
 image:
   repository: ghcr.io/readerofvillage/cloud-api
-  tag: 38646c534c6d3f1c52a72aba215cbb7354150f2d
+  tag: b9e287f3b87780fe914d687b4b03c1bed7574f90
 
 secretName: cloud-api-secret
 

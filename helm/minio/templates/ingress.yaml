@@ -8,13 +8,10 @@ metadata:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
 spec:
   ingressClassName: {{ .Values.ingress.ingressClassName }}
-  rules:
-    - host: {{ .Values.ingress.host }}
+  rules:   
+    - host: minio.local
       http:
         paths:
-          # ======================
-          # MinIO Console
-          # ======================
           - path: /
             pathType: Prefix
             backend:
@@ -23,14 +20,14 @@ spec:
                 port:
                   number: 9001
 
-          # ======================
-          # S3 API
-          # ======================
-          - path: /api
+    - host: s3.minio.local
+      http:
+        paths:
+          - path: /
             pathType: Prefix
             backend:
               service:
                 name: minio
                 port:
-                  number: 9000   
+                  number: 9000
 {{- end }}

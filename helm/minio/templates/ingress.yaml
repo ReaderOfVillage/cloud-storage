@@ -5,7 +5,6 @@ metadata:
   name: minio
   annotations:
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 spec:
   ingressClassName: {{ .Values.ingress.ingressClassName }}
   rules:   

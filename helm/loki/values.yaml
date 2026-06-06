@@ -5,7 +5,7 @@ loki:
   persistence:
     enabled: true
     size: 10Gi
-    storageClassName: standard
+    storageClassName: do-block-storage
   config:
     auth_enabled: false
     ingester:

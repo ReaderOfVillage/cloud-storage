@@ -19,9 +19,9 @@ loki:
     schema_config:
       configs:
       - from: 2020-10-24
-        store: boltdb-shipper
+        store: tsdb              
         object_store: filesystem
-        schema: v11
+        schema: v13            
         index:
           prefix: index_
           period: 24h
@@ -29,8 +29,9 @@ loki:
       http_listen_port: 3100
       log_level: info
     storage_config:
-      boltdb_shipper:
-        active_index_directory: /loki/index
+      tsdb_shipper:
+        active_index_directory: /loki/tsdb-index
+        cache_location: /loki/tsdb-cache
         shared_store: filesystem
       filesystem:
         directory: /loki/chunks

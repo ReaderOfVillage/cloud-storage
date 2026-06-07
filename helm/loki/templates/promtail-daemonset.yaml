@@ -17,8 +17,14 @@ spec:
       containers:
       - name: promtail
         image: grafana/promtail:2.9.0
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
         args:
         - -config.file=/etc/promtail/config.yaml
+        - -config.expand-env=true
         volumeMounts:
         - name: promtail-config
           mountPath: /etc/promtail

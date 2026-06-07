@@ -11,6 +11,9 @@ data:
     ingester:
       chunk_idle_period: 3m
       max_chunk_age: 1h
+      wal:
+        enabled: true
+        dir: /loki/wal
       lifecycler:
         ring:
           kvstore:

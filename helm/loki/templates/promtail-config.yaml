@@ -16,7 +16,7 @@ data:
       - source_labels: [__meta_kubernetes_pod_uid, __meta_kubernetes_pod_container_name]
         regex: (.+)/(.+)
         target_label: __path__
-        replacement: /var/log/pods/*_*_$1/$2/0.log
+        replacement: /var/log/pods/*_$1/$2/*.log
       - source_labels: [__meta_kubernetes_pod_name]
         target_label: pod
       - source_labels: [__meta_kubernetes_namespace]

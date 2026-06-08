@@ -1,23 +1,17 @@
 replicaCount: 2
-
 image:
   repository: ghcr.io/readerofvillage/cloud-api
-  tag: 0bbf3a064957b40e7c413185130ba408bd045a3c
-
+  tag: 86120bb1d0bfca7898bcb4924e53f4293fcee875
 secretName: cloud-api-secret
 secretNameMinio: minio-app-credentials
-
 containerPort: 8000
-
 service:
   port: 8000
   targetPort: 8000
   type: ClusterIP
-
 envFrom:
   - secretRef:
       name: cloud-api-secret
-
 volumes:
   - name: tls
     secret:
@@ -31,17 +25,13 @@ volumes:
   - name: minio-data
     persistentVolumeClaim:
       claimName: minio-pvc
-
 ingress:
   enabled: true
   className: nginx
   host: storageproject.duckdns.org
-
   tls:
     enabled: true
     secretName: cloud-tls
-
   path: /
-
 database:
   url: postgresql://app:app@postgres:5432/storage

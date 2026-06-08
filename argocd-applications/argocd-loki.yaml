@@ -6,15 +6,26 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/ReaderOfVillage/cloud-storage.git
-    targetRevision: main
-    path: helm/loki
+    repoURL: https://grafana.github.io/helm-charts
+    chart: loki-stack
+    targetRevision: 2.10.2
     helm:
       releaseName: loki
       values: |
         loki:
           enabled: true
-          
+          persistence:
+            enabled: true
+            size: 10Gi
+            storageClassName: do-block-storage
+        promtail:
+          enabled: true
+          config:
+            snippets:
+              pipelineStages:
+                - cri: {}
+        grafana:
+          enabled: false
   destination:
     server: https://kubernetes.default.svc
     namespace: default

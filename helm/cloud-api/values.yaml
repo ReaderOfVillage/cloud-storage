@@ -1,7 +1,7 @@
 replicaCount: 2
 image:
   repository: ghcr.io/readerofvillage/cloud-api
-  tag: 93ef9d36e4c64a2269d18057513b0a2529ba2a07
+  tag: 896319c5d2b5dd50254e6f98f12a98c5babf7a00
 secretName: cloud-api-secret
 secretNameMinio: minio-app-credentials
 containerPort: 8000

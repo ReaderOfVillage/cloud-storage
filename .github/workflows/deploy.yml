@@ -42,6 +42,6 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
 
-          git add helm/cloud-api/values.yaml
+          git add dev/helm/cloud-api/values.yaml
           git commit -m "update cloud-api image to ${{ github.sha }}" || echo "no changes"
           git push

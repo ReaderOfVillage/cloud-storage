@@ -9,7 +9,7 @@ spec:
   source:
     repoURL: https://github.com/ReaderOfVillage/cloud-storage.git
     targetRevision: main
-    path: helm/postgres
+    path: dev/helm/postgres
 
   destination:
     server: https://kubernetes.default.svc

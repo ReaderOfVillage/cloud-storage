@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/kubernetes/ingress-nginx
     targetRevision: controller-v1.11.2 
-    path: deploy/static/provider/do
+    path: deploy/static/provider/cloud
   destination:
     server: https://kubernetes.default.svc
     namespace: ingress-nginx

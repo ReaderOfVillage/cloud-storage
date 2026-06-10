@@ -3,7 +3,7 @@ image:
   repository: ghcr.io/readerofvillage/cloud-api
   tag: 84a777c1d94a67f8919abc9029ff70beddef6edd
 secretName: cloud-api-secret
-secretNameMinio: minio-app-credentials
+secretNameS3: s3-secret
 containerPort: 8000
 service:
   port: 8000
@@ -12,6 +12,8 @@ service:
 envFrom:
   - secretRef:
       name: cloud-api-secret
+  - secretRef:
+      name: s3-secret
 volumes:
   - name: tls
     secret:
@@ -22,9 +24,6 @@ volumes:
   - name: postgres-data
     persistentVolumeClaim:
       claimName: postgres-pvc
-  - name: minio-data
-    persistentVolumeClaim:
-      claimName: minio-pvc
 ingress:
   enabled: true
   className: nginx

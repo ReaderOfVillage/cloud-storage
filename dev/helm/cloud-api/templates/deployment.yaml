@@ -25,7 +25,7 @@ spec:
             - secretRef:
                 name: {{ .Values.secretName }}
             - secretRef:
-                name: {{ .Values.secretNameMinio }}
+                name: {{ .Values.secretNameS3 }}
 
           ports:
             - containerPort: {{ .Values.containerPort }}

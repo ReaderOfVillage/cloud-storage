@@ -1,0 +1,5 @@
+image:
+  tag: "16"
+
+storage:
+  size: 5Gi

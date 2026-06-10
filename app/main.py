@@ -55,11 +55,10 @@ async def upload_file(
 
         try:
             client.put_object(
-                "uploads",
-                object_name,
-                data=BytesIO(data),
-                length=len(data),
-                content_type=media_type
+                Bucket="cloud-storage-prod",
+                Key=object_name,
+                Body=data,
+                ContentType=media_type
             )
         except Exception:
             MINIO_ERRORS.inc()
@@ -113,9 +112,11 @@ def download_file(
 
     try:
         obj = client.get_object(
-            "uploads",
-            file.storage_key
+            Bucket="cloud-storage-prod",
+            Key=file.storage_key
         )
+
+        stream = obj["Body"]
     except Exception:
         MINIO_ERRORS.inc()
         raise
@@ -150,9 +151,9 @@ def delete_file(
     DELETES.inc()
 
     try:
-        client.remove_object(
-            "uploads",
-            file.storage_key
+        client.delete_object(
+            Bucket="cloud-storage-prod",
+            Key=file.storage_key
         )
     except Exception:
         MINIO_ERRORS.inc()

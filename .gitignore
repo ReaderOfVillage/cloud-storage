@@ -1,2 +1,8 @@
 *-secret.yaml
 !*-sealed-secret.yaml
+terraform/.terraform/
+terraform/**/.terraform/
+terraform/**/*.tfstate
+terraform/**/*.tfstate.backup
+terraform/**/*.tfvars
+**/.terraform.lock.hcl

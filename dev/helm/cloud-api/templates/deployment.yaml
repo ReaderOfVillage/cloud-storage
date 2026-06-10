@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloud-api
+
+spec:
+  replicas: {{ .Values.replicaCount }}
+
+  selector:
+    matchLabels:
+      app: cloud-api
+
+  template:
+    metadata:
+      labels:
+        app: cloud-api
+
+    spec:
+      containers:
+        - name: cloud-api
+
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+
+          envFrom:
+            - secretRef:
+                name: {{ .Values.secretName }}
+            - secretRef:
+                name: {{ .Values.secretNameMinio }}
+
+          ports:
+            - containerPort: {{ .Values.containerPort }}

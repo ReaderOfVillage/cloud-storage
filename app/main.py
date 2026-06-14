@@ -121,7 +121,10 @@ def download_file(
         MINIO_ERRORS.inc()
         raise
 
-    stat = client.stat_object("uploads", file.storage_key)
+    stat = client.head_object(
+        Bucket="cloud-storage-prod",
+        Key=file.storage_key
+    )
     media_type = stat.content_type or "application/octet-stream"
 
     return StreamingResponse(

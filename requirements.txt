@@ -10,3 +10,4 @@ python-magic
 boto3
 pytest
 httpx
+httpx2

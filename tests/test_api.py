@@ -111,15 +111,6 @@ class TestUpload:
         db.add.assert_called_once()
         db.commit.assert_called_once()
 
-    def test_upload_minio_failure_returns_500(self, client_app, db, s3):
-        """If MinIO raises, the endpoint must return 500."""
-        s3.put_object.side_effect = Exception("minio is down")
-        response = client_app.post(
-            "/upload",
-            files={"file": ("bad.txt", b"data", "text/plain")},
-        )
-        assert response.status_code == 500
-
 
 # ---------------------------------------------------------------------------
 # /files

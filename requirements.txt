@@ -8,3 +8,5 @@ prometheus-client
 python-dotenv
 python-magic
 boto3
+pytest
+httpx

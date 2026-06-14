@@ -177,23 +177,23 @@ def delete_file(
 @app.middleware("http")
 async def metrics_middleware(request, call_next):
     start = time.time()
-
-    response = await call_next(request)
-
-    duration = time.time() - start
-
-    endpoint = request.url.path
-
-    HTTP_REQUESTS.labels(
-        method=request.method,
-        endpoint=endpoint,
-        status=response.status_code
-    ).inc()
-
-    HTTP_DURATION.labels(
-        method=request.method,
-        endpoint=endpoint
-    ).observe(duration)
+    status_code = 500
+    try:
+        response = await call_next(request)
+        status_code = response.status_code
+    except Exception:
+        raise
+    finally:
+        duration = time.time() - start
+        HTTP_REQUESTS.labels(
+            method=request.method,
+            endpoint=request.url.path,
+            status=status_code
+        ).inc()
+        HTTP_DURATION.labels(
+            method=request.method,
+            endpoint=request.url.path
+        ).observe(duration)
 
     return response
 

@@ -27,10 +27,7 @@ volumes:
 ingress:
   enabled: true
   className: nginx
-  host: storageproject.duckdns.org
+  host: api.dev.internal
   tls:
-    enabled: true
-    secretName: cloud-tls
+    enabled: false
   path: /
-database:
-  url: postgresql://app:app@postgres:5432/storage

@@ -4,9 +4,13 @@ kind: Ingress
 metadata:
   name: cloud-api-ingress
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+  
+    {{- if .Values.ingress.tls.enabled }}
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    {{- end }}
+
     nginx.ingress.kubernetes.io/proxy-body-size: "500m"
 
 spec:

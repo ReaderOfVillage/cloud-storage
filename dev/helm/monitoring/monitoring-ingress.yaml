@@ -3,17 +3,10 @@ kind: Ingress
 metadata:
   name: grafana-ingress
   namespace: monitoring
-  annotations:
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
   ingressClassName: nginx
-  tls:
-  - hosts:
-    - storageprojectgrafana.duckdns.org
-    secretName: grafana-tls
   rules:
-  - host: storageprojectgrafana.duckdns.org
+  - host: grafana.dev.internal
     http:
       paths:
       - path: /

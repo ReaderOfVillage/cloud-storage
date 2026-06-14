@@ -1,0 +1,40 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: cloud-api-alerts
+  namespace: monitoring
+  labels:
+    release: monitoring
+spec:
+  groups:
+    - name: cloud-api
+      rules:
+
+        - alert: HighUploadFailureRate
+          expr: rate(upload_failures_total[5m]) > 0.1
+          for: 2m
+          labels:
+            severity: warning
+          annotations:
+            description: "Upload failures are above 0.1/sec for 2 minutes."
+
+        - alert: HighHTTPErrorRate
+          expr: |
+            rate(http_requests_total{status=~"5.."}[5m])
+            / rate(http_requests_total[5m]) > 0.05
+          for: 2m
+          labels:
+            severity: warning
+          annotations:
+            description: "More than 5% of requests are failing with 5xx errors."
+
+        - alert: SlowResponseTime
+          expr: |
+            histogram_quantile(0.95,
+              rate(http_request_duration_seconds_bucket[5m])
+            ) > 1.0
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            description: "95th percentile response time is above 1 second."

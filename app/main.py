@@ -55,7 +55,7 @@ async def upload_file(
 
         try:
             client.put_object(
-                Bucket="cloud-storage-prod",
+                Bucket="cloud-storage-dev",
                 Key=object_name,
                 Body=data,
                 ContentType=media_type
@@ -112,7 +112,7 @@ def download_file(
 
     try:
         obj = client.get_object(
-            Bucket="cloud-storage-prod",
+            Bucket="cloud-storage-dev",
             Key=file.storage_key
         )
 
@@ -122,7 +122,7 @@ def download_file(
         raise
 
     stat = client.head_object(
-        Bucket="cloud-storage-prod",
+        Bucket="cloud-storage-dev",
         Key=file.storage_key
     )
     media_type = stat.get("ContentType") or "application/octet-stream"
@@ -157,7 +157,7 @@ def delete_file(
 
     try:
         client.delete_object(
-            Bucket="cloud-storage-prod",
+            Bucket="cloud-storage-dev",
             Key=file.storage_key
         )
     except Exception:

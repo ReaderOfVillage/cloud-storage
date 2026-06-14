@@ -128,9 +128,11 @@ def download_file(
     media_type = stat.get("ContentType") or "application/octet-stream"
 
     return StreamingResponse(
-        obj,
+        stream,
         media_type=media_type,
-        headers={"Content-Disposition": f"attachment; filename={file.filename}"}
+        headers={
+            "Content-Disposition": f'attachment; filename="{file.filename}"'
+        }
     )
 
 

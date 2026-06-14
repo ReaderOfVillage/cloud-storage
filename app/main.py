@@ -125,7 +125,7 @@ def download_file(
         Bucket="cloud-storage-prod",
         Key=file.storage_key
     )
-    media_type = stat.content_type or "application/octet-stream"
+    media_type = stat.get("ContentType") or "application/octet-stream"
 
     return StreamingResponse(
         obj,

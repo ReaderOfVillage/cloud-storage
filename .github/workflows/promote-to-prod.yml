@@ -1,0 +1,40 @@
+name: Promote to Prod
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "yes" to confirm promotion to production'
+        required: true
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.confirm == 'yes' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Read current dev image tag
+        id: dev-tag
+        run: |
+          TAG=$(yq '.image.tag' dev/helm/cloud-api/values.yaml)
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "Promoting image tag: $TAG"
+
+      - name: Update prod Helm image tag
+        run: |
+          yq -i '.image.tag = "${{ steps.dev-tag.outputs.tag }}"' prod/helm/cloud-api/values.yaml
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add prod/helm/cloud-api/values.yaml
+          git commit -m "promote cloud-api ${{ steps.dev-tag.outputs.tag }} to prod"
+          git push

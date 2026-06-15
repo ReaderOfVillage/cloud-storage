@@ -1,7 +1,7 @@
 replicaCount: 1
 image:
   repository: ghcr.io/readerofvillage/cloud-api
-  tag: 586bda6d596472f594dccbae5c902bbf1773286f
+  tag: 24746e9b64bc5b50723875a88659133401fc0558
 secretName: cloud-api-secret
 secretNameS3: s3-secret
 containerPort: 8000

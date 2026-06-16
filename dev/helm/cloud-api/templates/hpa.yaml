@@ -17,13 +17,13 @@ spec:
         name: cpu
         target:
           type: Utilization
-          averageUtilizationPercentage: {{ .Values.hpa.cpuThreshold }}
+          averageUtilization: {{ .Values.hpa.cpuThreshold }}
     - type: Resource
       resource:
         name: memory
         target:
           type: Utilization
-          averageUtilizationPercentage: {{ .Values.hpa.memoryThreshold }}
+          averageUtilization: {{ .Values.hpa.memoryThreshold }}
     - type: Pods
       pods:
         metric:

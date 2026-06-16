@@ -1,6 +1,6 @@
 {{- if .Values.hpa.enabled }}
 apiVersion: autoscaling/v2
-kind: HPA
+kind: HorizontalPodAutoscaler
 metadata:
   name: cloud-api-hpa
 spec:

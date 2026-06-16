@@ -31,3 +31,13 @@ ingress:
   tls:
     enabled: false
   path: /
+
+livenessProbe:
+  initialDelaySeconds: 10
+  periodSeconds: 15
+  failureThreshold: 3
+
+readinessProbe:
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  failureThreshold: 3

@@ -29,3 +29,19 @@ spec:
 
           ports:
             - containerPort: {{ .Values.containerPort }}
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.containerPort }}
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.containerPort }}
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}

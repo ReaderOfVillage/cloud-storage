@@ -176,6 +176,9 @@ def delete_file(
 
 @app.middleware("http")
 async def metrics_middleware(request, call_next):
+    if request.url.path == "/health":
+        return await call_next(request)
+
     start = time.time()
     status_code = 500
     try:
@@ -203,3 +206,7 @@ def metrics():
         generate_latest(),
         media_type=CONTENT_TYPE_LATEST
     )
+
+@app.get("/health")
+def health():
+    return {"status": "ok"}

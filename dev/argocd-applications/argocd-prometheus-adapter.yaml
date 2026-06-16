@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus-adapter
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://kubernetes-sigs.github.io/prometheus-adapter
+    chart: prometheus-adapter
+    targetRevision: 4.10.0
+    helm:
+      values: |
+        prometheus:
+          url: http://prometheus-operated.monitoring.svc
+          port: 9090
+        rules:
+          custom:
+            - seriesQuery: 'uploads_total'
+              resources:
+                overrides:
+                  namespace: { resource: namespace }
+                  pod: { resource: pod }
+              name:
+                matches: "uploads_total"
+                as: "uploads_per_second"
+              metricsQuery: 'rate(uploads_total[2m])'
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

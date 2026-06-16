@@ -1,0 +1,33 @@
+{{- if .Values.hpa.enabled }}
+apiVersion: autoscaling/v2
+kind: HPA
+metadata:
+  name: cloud-api-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: cloud-api
+  minReplicas: {{ .Values.hpa.minReplicas }}
+  maxReplicas: {{ .Values.hpa.maxReplicas }}
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilizationPercentage: {{ .Values.hpa.cpuThreshold }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilizationPercentage: {{ .Values.hpa.memoryThreshold }}
+    - type: Pods
+      pods:
+        metric:
+          name: uploads_per_second
+        target:
+          type: AverageValue
+          averageValue: {{ .Values.hpa.uploadsThreshold }}
+{{- end }}

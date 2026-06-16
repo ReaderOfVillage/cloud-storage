@@ -53,3 +53,4 @@ hpa:
   cpuThreshold: 70
   memoryThreshold: 80
   uploadsThreshold: "10"
+namespace: default
